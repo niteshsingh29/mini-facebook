@@ -1,4 +1,4 @@
-import { LOCALSTORAGE_TOKEN_KEY } from "../utils/index";
+import { API_URLS,LOCALSTORAGE_TOKEN_KEY } from "../utils/index";
 const customFetch = async (url, { body, ...customConfig }) => {
   // body will be either null or it will be present
   // customConfig is the rest opertaor which is present for the extra part which you  want to add in the header
@@ -26,7 +26,7 @@ const customFetch = async (url, { body, ...customConfig }) => {
   try {
     const response = await fetch(url, config);
     const data = await response.json();
-    if (response.success) {
+    if (data.success) {
       return { data: data.data, success: true };
     }
     throw new Error(data.message);
@@ -36,6 +36,8 @@ const customFetch = async (url, { body, ...customConfig }) => {
   }
 };
 
-const getPosts = (page, limit) => {
-  return customFetch();
+export const getPosts = (page = 1, limit = 5) => {
+  return customFetch(API_URLS.posts(page, limit), {
+    method: "GET",
+  });
 };
